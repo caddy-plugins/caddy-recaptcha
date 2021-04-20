@@ -29,10 +29,10 @@ func (rule V2Rule) Validate(r *http.Request) bool {
 	}
 
 	response := r.PostForm.Get("g-recaptcha-response")
-	if response == "" {
+	if len(response) == 0 {
 		response = r.Header.Get("g-recaptcha-response")
 	}
-	if response == "" {
+	if len(response) == 0 {
 		return false
 	}
 
@@ -44,17 +44,22 @@ func (rule V2Rule) Validate(r *http.Request) bool {
 		return false
 	}
 
-	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	result := &V2Result{}
+	json.NewDecoder(resp.Body).Decode(result)
 
 	host, _, err := net.SplitHostPort(r.Host)
 	if err != nil {
 		return false
 	}
 
-	if result["hostname"].(string) != host {
+	if result.Hostname != host {
 		return false
 	}
 
-	return result["success"].(bool)
+	return result.Success
+}
+
+type V2Result struct {
+	Success  bool   `json:"success"`
+	Hostname string `json:"hostname"`
 }

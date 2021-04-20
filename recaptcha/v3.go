@@ -31,10 +31,10 @@ func (rule V3Rule) Validate(r *http.Request) bool {
 	}
 
 	response := r.PostForm.Get("g-recaptcha-response")
-	if response == "" {
+	if len(response) == 0 {
 		response = r.Header.Get("g-recaptcha-response")
 	}
-	if response == "" {
+	if len(response) == 0 {
 		return false
 	}
 
@@ -46,14 +46,14 @@ func (rule V3Rule) Validate(r *http.Request) bool {
 		return false
 	}
 
-	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	result := &V3Result{}
+	json.NewDecoder(resp.Body).Decode(result)
 
-	if !result["success"].(bool) {
+	if !result.Success {
 		return false
 	}
 
-	if result["action"].(string) != rule.Action {
+	if result.Action != rule.Action {
 		return false
 	}
 
@@ -62,13 +62,20 @@ func (rule V3Rule) Validate(r *http.Request) bool {
 		return false
 	}
 
-	if result["hostname"].(string) != host {
+	if result.Hostname != host {
 		return false
 	}
 
-	if result["score"].(float64) < rule.Threshold {
+	if result.Score < rule.Threshold {
 		return false
 	}
 
 	return true
+}
+
+type V3Result struct {
+	Success  bool    `json:"success"`
+	Action   string  `json:"action"`
+	Hostname string  `json:"hostname"`
+	Score    float64 `json:"score"`
 }
