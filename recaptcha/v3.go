@@ -41,7 +41,7 @@ func (rule V3Rule) Validate(r *http.Request) bool {
 	params := url.Values{}
 	params.Set("secret", rule.Secret)
 	params.Set("response", response)
-	resp, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify", params)
+	resp, err := http.PostForm(endpoint, params)
 	if err != nil {
 		return false
 	}
