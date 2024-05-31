@@ -33,7 +33,7 @@ func (h Recaptchas) ServeHTTP(w http.ResponseWriter, r *http.Request) (int, erro
 			continue
 		}
 		if r.Method != rule.GetMethod() {
-			if isGet {
+			if isGet && len(rule.GetSiteKey()) > 0 {
 				append += buildJSScript(rule.GetSiteKey(), rule.GetAction())
 			}
 			continue
