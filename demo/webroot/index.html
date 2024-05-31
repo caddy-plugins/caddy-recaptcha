@@ -3,34 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Caddy-login Demo Application</title>
+    <title>Caddy-Recaptcha Demo Application</title>
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
   </head>
   <body>
-      <!-- Static navbar -->
-      <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
-          <div id="navbar" class="navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Start</a></li>
-              <li><a href="/private">Private</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/login">Login</a></li>
-            </ul>
-          </div>
+          <form action="" method="post">
+            <button type="submit">submit</button>
+          </form>
         </div>
-      </nav>
-
-      <div class="container">        
-        <div class="jumbotron">
-          <h3>Caddy Login Demo Application</h3>
-          <div>Please <a href="/login">login</a> as <code>demo/demo</code>.</div>
-          
-          <div>Or <a href="/login?backTo=http://www.example.org/">login with redirect</a> as <code>demo/demo</code>.</div>
-        </div>        
-      </div>       
-      
   </body>
 </html>

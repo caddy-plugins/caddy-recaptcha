@@ -4,10 +4,10 @@ http://localhost:18080 {
   log stdout  
   root {$PWD}/webroot
   ext .html
-  header /private Cache-Control "no-cache, no-store, must-revalidate"
+  header / Cache-Control "no-cache, no-store, must-revalidate"
   
-  recaptcha v3 secret {
-    action POST /private
+  recaptcha v3 {$secret} {$siteKey} {
+    login POST /
   }
   
 }
