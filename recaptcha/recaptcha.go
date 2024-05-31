@@ -2,7 +2,9 @@ package recaptcha
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/admpub/caddy/caddyhttp/httpserver"
 	filter "github.com/caddy-plugins/caddy-filter"
@@ -21,32 +23,36 @@ type Rule interface {
 	Validate(r *http.Request) bool
 }
 
+var errInvalid = errors.New("Failed to validate reCAPTCHA.")
+
 func (h Recaptchas) ServeHTTP(w http.ResponseWriter, r *http.Request) (int, error) {
 	var append string
-	isGetHTML := r.Method == http.MethodGet && w.Header().Get(`Content-Type`) == `text/html`
+	isGet := r.Method == http.MethodGet
 	for _, rule := range h.Rules {
 		if r.URL.Path != rule.GetPath() {
 			continue
 		}
 		if r.Method != rule.GetMethod() {
-			if isGetHTML {
+			if isGet {
 				append += buildJSScript(rule.GetSiteKey(), rule.GetAction())
 			}
 			continue
 		}
 		if !rule.Validate(r) {
-			return 400, errors.New("Failed to validate reCAPTCHA.")
+			return 400, errInvalid
 		}
+		//fmt.Println(`Success!!!!!!!!!!!!!`)
 		return h.Next.ServeHTTP(w, r)
 	}
 
-	if isGetHTML && len(append) > 0 {
+	if isGet && len(append) > 0 {
 		return filter.RewriteResponse(w, r, func(wrapper http.ResponseWriter) bool {
-			return true
+			return strings.SplitN(wrapper.Header().Get(`Content-Type`), `;`, 2)[0] == `text/html`
 		}, func(wrapper http.ResponseWriter) (bool, []byte) {
 			wrapperd := wrapper.(RecordedAndDecodeIfRequired)
 			body := wrapperd.RecordedAndDecodeIfRequired()
 			bodyRetrieved := true
+			fmt.Println(string(body))
 			body = fixedForm(body, append)
 			return bodyRetrieved, body
 		}, 1024*1024, h.Next)

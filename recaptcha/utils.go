@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"slices"
 	"strings"
+
+	"github.com/admpub/pp"
 )
 
 func buildJSScript(sitekey string, action string) string {
@@ -20,6 +22,10 @@ func fixedForm(content []byte, append string) []byte {
 	if index <= 0 {
 		return content
 	}
-	content = slices.Insert(content, index-1, []byte(append)...)
+	content = slices.Insert(content, index, []byte(append)...)
 	return content
+}
+
+func dump(v ...interface{}) {
+	pp.Println(v...)
 }
