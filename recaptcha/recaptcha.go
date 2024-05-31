@@ -2,7 +2,6 @@ package recaptcha
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -52,7 +51,6 @@ func (h Recaptchas) ServeHTTP(w http.ResponseWriter, r *http.Request) (int, erro
 			wrapperd := wrapper.(RecordedAndDecodeIfRequired)
 			body := wrapperd.RecordedAndDecodeIfRequired()
 			bodyRetrieved := true
-			fmt.Println(string(body))
 			body = fixedForm(body, append)
 			return bodyRetrieved, body
 		}, 1024*1024, h.Next)
