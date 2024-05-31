@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"path"
 )
 
 type V3Rule struct {
@@ -14,17 +13,26 @@ type V3Rule struct {
 	Threshold float64
 	Method    string
 	Path      string
+	SiteKey   string
+}
+
+func (rule V3Rule) GetPath() string {
+	return rule.Path
+}
+
+func (rule V3Rule) GetMethod() string {
+	return rule.Method
+}
+
+func (rule V3Rule) GetAction() string {
+	return rule.Action
+}
+
+func (rule V3Rule) GetSiteKey() string {
+	return rule.SiteKey
 }
 
 func (rule V3Rule) Validate(r *http.Request) bool {
-	if r.Method != rule.Method {
-		return true
-	}
-
-	if path.Clean(r.URL.Path) != rule.Path {
-		return true
-	}
-
 	err := r.ParseForm()
 	if err != nil {
 		return false

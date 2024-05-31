@@ -2,7 +2,10 @@ module github.com/caddy-plugins/caddy-recaptcha
 
 go 1.21
 
-require github.com/admpub/caddy v1.2.7
+require (
+	github.com/admpub/caddy v1.2.7
+	github.com/caddy-plugins/caddy-filter v0.15.5
+)
 
 require (
 	gitee.com/admpub/certmagic v0.8.8 // indirect

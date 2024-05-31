@@ -44,6 +44,11 @@ func parse(c *caddy.Controller) ([]Rule, error) {
 		}
 		secret := c.Val()
 
+		var siteKey string
+		if c.NextArg() {
+			siteKey = c.Val()
+		}
+
 		if version == "v3" {
 			for c.NextBlock() {
 				action := c.Val()
@@ -51,7 +56,7 @@ func parse(c *caddy.Controller) ([]Rule, error) {
 					return nil, c.ArgErr()
 				}
 
-				recaptcha := V3Rule{Secret: secret, Action: action}
+				recaptcha := V3Rule{Secret: secret, Action: action, SiteKey: siteKey}
 
 				threshold, err := strconv.ParseFloat(c.Val(), 64)
 				if err != nil {
@@ -85,7 +90,7 @@ func parse(c *caddy.Controller) ([]Rule, error) {
 			}
 		} else if version == "v2" {
 			for c.NextBlock() {
-				recaptcha := V2Rule{Secret: secret}
+				recaptcha := V2Rule{Secret: secret, SiteKey: siteKey}
 
 				method := c.Val()
 				if !(method == "POST" || method == "PUT" || method == "PATCH") {

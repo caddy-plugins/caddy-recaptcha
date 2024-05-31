@@ -48,7 +48,7 @@ func TestParse(t *testing.T) {
 		{`recaptcha v3 secret {
 			action /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .5, "POST", "/path"},
+			V3Rule{"secret", "action", .5, "POST", "/path", ""},
 		}},
 		{`recaptcha v3 secret {
 			action junk /path
@@ -62,17 +62,17 @@ func TestParse(t *testing.T) {
 		{`recaptcha v3 secret {
 			action .6 /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .6, "POST", "/path"},
+			V3Rule{"secret", "action", .6, "POST", "/path", ""},
 		}},
 		{`recaptcha v3 secret {
 			action PUT /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .5, "PUT", "/path"},
+			V3Rule{"secret", "action", .5, "PUT", "/path", ""},
 		}},
 		{`recaptcha v3 secret {
 			action .6 PUT /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .6, "PUT", "/path"},
+			V3Rule{"secret", "action", .6, "PUT", "/path", ""},
 		}},
 		{`recaptcha v3 secret {
 			action /path
@@ -81,16 +81,16 @@ func TestParse(t *testing.T) {
 			action PUT /path
 			action .6 PUT /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .5, "POST", "/path"},
-			V3Rule{"secret", "action", .5, "POST", "/path"},
-			V3Rule{"secret", "action", .6, "POST", "/path"},
-			V3Rule{"secret", "action", .5, "PUT", "/path"},
-			V3Rule{"secret", "action", .6, "PUT", "/path"},
+			V3Rule{"secret", "action", .5, "POST", "/path", ""},
+			V3Rule{"secret", "action", .5, "POST", "/path", ""},
+			V3Rule{"secret", "action", .6, "POST", "/path", ""},
+			V3Rule{"secret", "action", .5, "PUT", "/path", ""},
+			V3Rule{"secret", "action", .6, "PUT", "/path", ""},
 		}},
 		{`recaptcha v2 secret {
 			/path
 		}`, true, []Rule{
-			V2Rule{"secret", "POST", "/path"},
+			V2Rule{"secret", "POST", "/path", ""},
 		}},
 		{`recaptcha v2 secret {
 			junk /path
@@ -98,7 +98,7 @@ func TestParse(t *testing.T) {
 		{`recaptcha v2 secret {
 			PUT /path
 		}`, true, []Rule{
-			V2Rule{"secret", "PUT", "/path"},
+			V2Rule{"secret", "PUT", "/path", ""},
 		}},
 		{`recaptcha v3 secret {
 			action /path
@@ -116,14 +116,14 @@ func TestParse(t *testing.T) {
 		recaptcha v2 secret_ {
 			PUT /path
 		}`, true, []Rule{
-			V3Rule{"secret", "action", .5, "POST", "/path"},
-			V3Rule{"secret", "action", .5, "POST", "/path"},
-			V3Rule{"secret_", "action", .6, "POST", "/path"},
-			V3Rule{"secret_", "action", .5, "PUT", "/path"},
-			V3Rule{"secret_", "action", .6, "PUT", "/path"},
-			V2Rule{"secret", "POST", "/path"},
-			V2Rule{"secret", "POST", "/path"},
-			V2Rule{"secret_", "PUT", "/path"},
+			V3Rule{"secret", "action", .5, "POST", "/path", ""},
+			V3Rule{"secret", "action", .5, "POST", "/path", ""},
+			V3Rule{"secret_", "action", .6, "POST", "/path", ""},
+			V3Rule{"secret_", "action", .5, "PUT", "/path", ""},
+			V3Rule{"secret_", "action", .6, "PUT", "/path", ""},
+			V2Rule{"secret", "POST", "/path", ""},
+			V2Rule{"secret", "POST", "/path", ""},
+			V2Rule{"secret_", "PUT", "/path", ""},
 		}},
 	}
 

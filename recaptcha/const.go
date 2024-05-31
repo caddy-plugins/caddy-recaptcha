@@ -8,7 +8,7 @@ const jslib = `https://www.recaptcha.net/recaptcha/api.js?render=`
 
 const jsscript = `<script src="{{jslib}}{{sitekey}}"></script>
 <script>
-window.addEventListener('load',function(){
+document.addEventListener('load',function(){
 var form=document.querySelector("form:last");
 if(!form) return;
 form.addEventListener('submit',function(e) {
@@ -26,5 +26,5 @@ grecaptcha.execute('{{sitekey}}', {action: '{{action}}'}).then(function(token) {
 	that.submit();
 });
 });
-}
+})
 </script>`

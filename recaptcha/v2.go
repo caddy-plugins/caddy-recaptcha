@@ -5,24 +5,32 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"path"
 )
 
 type V2Rule struct {
-	Secret string
-	Method string
-	Path   string
+	Secret  string
+	Method  string
+	Path    string
+	SiteKey string
+}
+
+func (rule V2Rule) GetPath() string {
+	return rule.Path
+}
+
+func (rule V2Rule) GetMethod() string {
+	return rule.Method
+}
+
+func (rule V2Rule) GetAction() string {
+	return ``
+}
+
+func (rule V2Rule) GetSiteKey() string {
+	return rule.SiteKey
 }
 
 func (rule V2Rule) Validate(r *http.Request) bool {
-	if r.Method != rule.Method {
-		return true
-	}
-
-	if path.Clean(r.URL.Path) != rule.Path {
-		return true
-	}
-
 	err := r.ParseForm()
 	if err != nil {
 		return false
